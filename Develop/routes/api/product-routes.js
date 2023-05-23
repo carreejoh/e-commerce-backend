@@ -9,13 +9,24 @@ router.get('/', (req, res) => {
   // be sure to include its associated Category and Tag data
   Product.findAll().then((productData) => {
     res.json(productData);
-  })
+  });
 });
 
 // get one product
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   // find a single product by its `id`
   // be sure to include its associated Category and Tag data
+  try {
+    const productData = await Product.findByPk(req.params.id);
+    if(!productData) {
+      res.status(404).json({ message: "This product doesn't exist"});
+      return;
+    } else {
+      res.status(200).json(productData);
+    }
+  } catch (err) {
+    res.status(500).json(err);
+  }
 });
 
 // create new product
@@ -94,6 +105,15 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
+  Product.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
+  .then((deletedProduct) => {
+    res.json(deletedProduct);
+  })
+  .catch((err) => res.json(err));
 });
 
 module.exports = router;
