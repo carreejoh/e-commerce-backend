@@ -101,15 +101,5 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
-//   Product.destroy({
-//     where: {
-//       id: req.params.id,
-//     },
-//   })
-//   .then((deletedProduct) => {
-//     res.json(deletedProduct);
-//   })
-//   .catch((err) => res.json(err));
-// });
 
 module.exports = router;
